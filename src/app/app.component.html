@@ -1,0 +1,36 @@
+  <div class="flexbox-parent center">
+    <div layout="row" layout-align="center center" style="min-height: 500px">
+      <h2>
+        Angular material autocomplete search - technostuf.com
+      </h2>
+      <mat-form-field>
+        <input matInput placeholder="Search Tags" [(ngModel)]="selectedTag" [matAutocomplete]="auto"
+          [formControl]="searchTagCtrl" placeholder="Min 2 Characters">
+        <button *ngIf="selectedTag" matSuffix mat-icon-button aria-label="Clear" (click)="clearTags()">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-autocomplete [panelWidth]="500" #auto="matAutocomplete" (optionSelected)="onSelected()"
+          [displayWith]="displayWith">
+          <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
+          <ng-container *ngIf="!isLoading">
+            <mat-option *ngFor="let tag of filteredTags" [value]="tag">
+              <span>{{tag.name}}</span>
+            </mat-option>
+          </ng-container>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <br><br>
+
+      <ng-container *ngIf="errorMsg; else elseTemplate">
+        {{errorMsg}}
+      </ng-container>
+      <ng-template #elseTemplate>
+        <div *ngIf="selectedTag?.name">
+          <div>
+            <h3>Selected Tag: {{selectedTag?.name}}</h3>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
